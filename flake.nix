@@ -24,7 +24,7 @@
     homeConfigurations.ryanpatterson-cross = 
       home-manager.lib.homeManagerConfiguration {
         pkgs = nixpkgs.legacyPackages.${arch};
-        modules = [ ../home.nix ];
+        modules = [ ./home.nix ];
       };
 
     };
