@@ -71,16 +71,16 @@
         symbol = "";
       };
       nix_shell = {
-        format = "w/ Nix [$state( \\($name\\))]($style) ";
+        format = "w/ [$state( \\($name\\))]($style) ";
         symbol = "";
-        style = "5";
+        style = "16";
       };
       custom = {
         python = {
           command = " echo $(python --version | cut -d' ' -f2) ";
-          format = "w/ Py [($output)]($style) ";
+          format = "w/ [(\\($output\\))]($style) ";
           style = "2";
-          when = "true";
+          when = "command -v python";
         };
         venv = {
           command = " echo $(basename $(dirname \"$VIRTUAL_ENV\"))/$(basename \"$VIRTUAL_ENV\") ";
