@@ -6,6 +6,19 @@
   home.stateVersion = "24.05";
   programs.home-manager.enable = true;
 
+  # pkgs are in their own modules
+  imports = [
+    ./term/alacritty/default.nix
+    ./shell/zsh/default.nix
+    ./shell/starship/default.nix
+    ./shell/tmux/default.nix
+    ./tools/fzf/default.nix
+    ./tools/git/default.nix
+    ./tools/bat/default.nix
+    ./programs.nix
+  ] ;
+
+  # pkgs not available as programs
   home.packages = with pkgs; [
     cookiecutter
     cz-cli
@@ -20,14 +33,11 @@
   # Enable fonts
   fonts.fontconfig.enable = true;
 
-  imports = [
-    ./term/alacritty/default.nix
-    ./shell/zsh/default.nix
-    ./shell/starship/default.nix
-    ./shell/tmux/default.nix
-    ./tools/fzf/default.nix
-    ./tools/git/default.nix
-    ./tools/bat/default.nix
-    ./programs.nix
-  ] ;
+  # Install configuration
+  # Mostly QMK install at the moment
+  home.activation.installConfig = ''
+    if [ ! -d "${config.home.homeDirectory}/qmk_firmware" ]; then
+      ${pkgs.git}/bin/git clone --depth 1 https://github.com/rbpatt2019/qmk_firmware ${config.home.homeDirectory}/qmk_firmware
+    fi
+  '';
 }
