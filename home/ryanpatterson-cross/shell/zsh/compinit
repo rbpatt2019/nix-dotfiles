@@ -1,0 +1,5 @@
+autoload -Uz compinit
+for dump in $ZDOTDIR/.zcompdump(N.mh+24); do
+  compinit
+done
+compinit -C

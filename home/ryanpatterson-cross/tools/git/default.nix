@@ -7,6 +7,7 @@
     aliases = {
       a = "add";
       bye = "clean -fdx";
+      b = "branch";
       c = "cz";
       d = "diff";
       ds = "diff --cached";
@@ -23,24 +24,19 @@
       m = "move";
       p = "push";
       pub = "push -u origin HEAD";
-      rsh = "reset --hard";
-      rsm = "reset --mixed";
-      rss = "reset --soft";
+      r = "reset";
       rb = "rebase -i";
       rbu = "rebase -i @{u}";
       s = "status -sb";
       st = "stash";
-      stg = "stash pop";
-      stp = "stash push --message";
+      stp = "stash pop";
       stl = "stash list --pretty=rlo --stat";
       sts = "stash show --ext-diff --patch";
       sw = "switch";
       swc = "switch --create";
       swd = "switch --detach";
       t = "tag";
-      uns = "restore --staged";
-      unw = "restore --worktree";
-      una = "restore -SW";
+      undo = "restore";
       x = "rm";
     };
     difftastic = {
@@ -60,4 +56,8 @@
       };
     };
   };
+
+  
+  # Link file for cz
+  home.file.".czrc".source = ./czrc;
 }

@@ -1,0 +1,31 @@
+# fix colours
+set -ag terminal-overrides ",$TERM:RGB"
+
+# source tmux conf
+unbind r
+bind r source-file ~/.tmux.conf
+
+# Because the default split commands are dumb
+unbind '"'
+unbind %
+bind | split-window -h -c "#{pane_current_path}"
+bind V split-window -fh -c "#{pane_current_path}"
+bind - split-window -v -c "#{pane_current_path}"
+bind H split-window -fv -c "#{pane_current_path}"
+
+# Because visual mode should also behave like vim
+unbind [
+unbind ]
+bind-key -T prefix v copy-mode
+bind-key -T copy-mode-vi v send-keys -X begin-selection
+bind-key -T copy-mode-vi y send-keys -X copy-selection
+bind-key -T prefix p paste-buffer
+
+# Sanity setting
+set-option -g renumber-windows on
+set-option -g allow-rename off
+
+unbind X
+unbind S
+bind-key -T prefix X confirm-before kill-session
+bind-key -T prefix S set-window-option synchronize-panes

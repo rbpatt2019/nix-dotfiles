@@ -1,0 +1,47 @@
+# Set options
+_comp_options+=(globdots)
+bindkey ' ' magic-space
+setopt auto_cd auto_pushd pushd_ignore_dups pushd_silent no_case_glob correct
+
+# Configure path
+# The typeset call prevents duplicates
+typeset -aU path
+path=(
+        "/Users/ryanpatterson-cross/.nix-profile/bin"
+        "/nix/var/nix/profiles/default/bin"
+        "/opt/local/bin"
+        "/opt/local/sbin"
+        $path
+)
+
+# Add visual line editing
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd v edit-command-line
+#
+# Useful functions
+mkcd()
+{
+	mkdir -p -- "$1" &&
+	cd -P -- "$1"
+}
+
+colours()
+{
+        printf "Colors 0 to 17 for the standard 16 foreground colors\n"
+        for ((c = 0; c < 18; c++)); do
+            printf "|%s%3d%s" "$(tput setaf "$c")" "$c" "$(tput sgr0)"
+        done
+        printf "|\n\n"
+
+        printf "Colors 0 to 17 for the standard 16 background colors\n"
+        for ((c = 0; c < 18; c++)); do
+            printf "|%s%3d%s" "$(tput setab "$c")" "$c" "$(tput sgr0)"
+        done
+        printf "|\n\n"
+}
+
+# Dir nav shortcuts - don't wnat to manually include all these
+for i in {1..9}; do
+    alias "$i=cd ~$i"
+done
