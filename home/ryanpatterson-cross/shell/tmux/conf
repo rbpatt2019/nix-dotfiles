@@ -3,7 +3,7 @@ set -ag terminal-overrides ",$TERM:RGB"
 
 # source tmux conf
 unbind r
-bind r source-file ~/.tmux.conf
+bind r source-file ~/.config/tmux/tmux.conf
 
 # Because the default split commands are dumb
 unbind '"'
@@ -23,7 +23,7 @@ bind-key -T prefix p paste-buffer
 
 # Sanity setting
 set-option -g renumber-windows on
-set-option -g allow-rename off
+set-option -g automatic-rename off
 
 unbind X
 unbind S
