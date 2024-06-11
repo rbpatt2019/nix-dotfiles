@@ -10,6 +10,12 @@
   
   programs.fd = { enable = true; };
 
+  programs.gh = {
+    enable = true;
+    gitCredentialHelper.enable = true;
+    settings.git_protocol = "ssh";
+  };
+
   programs.jq = { enable = true; };
 
   programs.lazygit = { enable = true; };
