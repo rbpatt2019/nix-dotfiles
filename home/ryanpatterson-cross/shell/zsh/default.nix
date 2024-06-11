@@ -36,6 +36,7 @@
       del = "rm -rf";
       g = "git";
       i = "ipython";
+      l = "lazygit";
       la = "eza -ahl --total-size --git";
       lt = "eza -ahlr --sort=time --total-size --git";
       ll = "eza -hl --total-size --git";
