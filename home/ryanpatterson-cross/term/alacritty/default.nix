@@ -10,7 +10,7 @@
       };
       font = {
         normal = { family = "Inconsolata Nerd Font Mono"; };
-        size = 18.0;
+        size = 16.0;
       };
       colors = {
         cursor = { text = "#1e1e2e"; cursor = "#f5e0dc"; };
