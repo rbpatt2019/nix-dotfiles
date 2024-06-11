@@ -21,7 +21,6 @@
       ll = "log --pretty=lf --graph";
       la = "log --pretty=lc --graph --all";
       lal = "log --pretty=lf --graph --all";
-      m = "move";
       p = "push";
       pub = "push -u origin HEAD";
       r = "reset";
