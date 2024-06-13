@@ -42,6 +42,7 @@ in
         plugin = catppuccin;
         extraConfig = ''
           set-option -g status-position top
+          set -g @catppuccin_custom_plugin_dir "~/.config/tmux/plugins"
 
           set -g @catppuccin_window_left_separator "█"
           set -g @catppuccin_window_right_separator "█ "
@@ -53,7 +54,7 @@ in
           set -g @catppuccin_window_current_fill "number"
           set -g @catppuccin_window_current_text "#W"
 
-          set -g @catppuccin_status_modules_right "cpu battery date_time"
+          set -g @catppuccin_status_modules_right "mode_indicator cpu battery date_time"
           set -g @catppuccin_status_left_separator  ""
           set -g @catppuccin_status_right_separator " "
           set -g @catppuccin_status_fill "all"
@@ -66,6 +67,7 @@ in
       }
       battery
       cpu
+      mode-indicator
       {
         plugin = menus;
         extraConfig = ''
@@ -84,4 +86,7 @@ in
 
     extraConfig = builtins.readFile ./conf;
   };
+
+  # Add plugin files
+  home.file.".config/tmux/plugins".source = ./plugins;
 }
