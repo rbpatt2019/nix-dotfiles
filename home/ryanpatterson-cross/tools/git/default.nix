@@ -39,15 +39,22 @@
       undo = "restore";
       x = "rm";
     };
-    difftastic = {
+    delta = {
       enable = true;
-      color = "always";
-      background = "dark";
-      display = "side-by-side-show-both";
+      options = {
+        side-by-side = true;
+        dark = true;
+        syntax-theme = "catppuccin";
+      };
     };
     extraConfig = {
       core = { editor = "nvim"; };
+      diff = { colorMoved = "default"; };
       init = { defaultBranch = "main"; };
+      merge = { 
+        conflictstyle = "diff3";
+        ff = true;
+      };
       pull = { rebase = true; };
       pretty = {
         lc = "format:%C(auto)%h%C(reset) %C(white)-%C(reset) %C(italic blue)%ad%C(reset) %C(italic cyan)(%ar)%C(reset)%C(auto)%d%C(reset)%n %C(white)⤷%C(reset) %s %C(241)- %aN <%aE>%C(reset)%n"; 
