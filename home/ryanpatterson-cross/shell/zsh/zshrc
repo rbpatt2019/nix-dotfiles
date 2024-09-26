@@ -45,3 +45,8 @@ colours()
 for i in {1..9}; do
     alias "$i=cd ~$i"
 done
+
+# Macos fzf-cd-widget fix
+case $(uname -s) in
+  (*Darwin*) bindkey "ç" fzf-cd-widget;;
+esac
