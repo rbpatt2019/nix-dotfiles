@@ -20,7 +20,6 @@
       lu = "log --pretty=lc --graph @..@{u}";
       ll = "log --pretty=lf --graph";
       la = "log --pretty=lc --graph --all";
-      lal = "log --pretty=lf --graph --all";
       p = "push";
       pub = "push -u origin HEAD";
       r = "reset";
@@ -45,16 +44,16 @@
         side-by-side = true;
         dark = true;
         syntax-theme = "catppuccin";
+        hyperlinks = true;
       };
     };
     extraConfig = {
-      core = { editor = "nvim"; };
+      core = { 
+        editor = "nvim";
+      };
       diff = { colorMoved = "default"; };
       init = { defaultBranch = "main"; };
-      merge = { 
-        conflictstyle = "diff3";
-        ff = true;
-      };
+      merge = { conflictstyle = "diff3"; };
       pull = { rebase = true; };
       pretty = {
         lc = "format:%C(auto)%h%C(reset) %C(white)-%C(reset) %C(italic blue)%ad%C(reset) %C(italic cyan)(%ar)%C(reset)%C(auto)%d%C(reset)%n %C(white)⤷%C(reset) %s %C(241)- %aN <%aE>%C(reset)%n"; 
@@ -68,7 +67,6 @@
     };
   };
 
-  
-  # Link file for cz
   home.file.".czrc".source = ./czrc;
+  home.sessionVariables."DELTA_PAGER" = "less -R";
 }
