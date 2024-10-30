@@ -14,6 +14,7 @@
     ./shell/tmux/default.nix
     ./tools/fzf/default.nix
     ./tools/git/default.nix
+    ./tools/lazygit/default.nix
     ./tools/bat/default.nix
     # ./editors/nvim/default.nix
     ./programs.nix

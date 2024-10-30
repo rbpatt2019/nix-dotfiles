@@ -18,8 +18,6 @@
 
   programs.jq = { enable = true; };
 
-  programs.lazygit = { enable = true; };
-
   programs.lf = { enable = true; };
 
   programs.pandoc = {enable = true; };
