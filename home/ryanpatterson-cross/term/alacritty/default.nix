@@ -6,7 +6,7 @@
         padding = { x = 5; y = 5; };
         decorations = "buttonless";
         startup_mode = "Windowed";
-        option_as_alt = "None";
+        option_as_alt = "OnlyLeft";
       };
       font = {
         normal = { family = "Inconsolata Nerd Font Mono"; };
