@@ -8,8 +8,12 @@
       add_newline = true;
       scan_timeout = 100;
 
-      time = { disabled = true; };
-      conda = { disabled = true; };
+      time = {
+        disabled = true;
+      };
+      conda = {
+        disabled = true;
+      };
 
       username = {
         format = "[$user]($style)";

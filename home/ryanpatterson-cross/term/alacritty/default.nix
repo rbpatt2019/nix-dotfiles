@@ -3,31 +3,66 @@
     enable = true;
     settings = {
       window = {
-        padding = { x = 5; y = 5; };
+        padding = {
+          x = 5;
+          y = 5;
+        };
         decorations = "buttonless";
         startup_mode = "Windowed";
         option_as_alt = "OnlyLeft";
       };
       font = {
-        normal = { family = "Inconsolata Nerd Font Mono"; };
+        normal = {
+          family = "Inconsolata Nerd Font Mono";
+        };
         size = 16.0;
       };
       colors = {
-        cursor = { text = "#1e1e2e"; cursor = "#f5e0dc"; };
-        vi_mode_cursor = { text = "#1e1e2e"; cursor = "#b4befe"; };
-        selection = { text = "#1e1e2e"; background = "#f5e0dc"; };
-        footer_bar = { foreground = "#1e1e2e"; background = "#a6adc8"; };
+        cursor = {
+          text = "#1e1e2e";
+          cursor = "#f5e0dc";
+        };
+        vi_mode_cursor = {
+          text = "#1e1e2e";
+          cursor = "#b4befe";
+        };
+        selection = {
+          text = "#1e1e2e";
+          background = "#f5e0dc";
+        };
+        footer_bar = {
+          foreground = "#1e1e2e";
+          background = "#a6adc8";
+        };
         indexed_colors = [
-          { index = 16; color = "#fab387"; }
-          { index = 17; color = "#f5e0dc"; }
+          {
+            index = 16;
+            color = "#fab387";
+          }
+          {
+            index = 17;
+            color = "#f5e0dc";
+          }
         ];
         hints = {
-          start = { foreground = "#1e1e2e"; background = "#f9e2af"; };
-          end = { foreground = "#1e1e2e"; background = "#a6adc8"; };
+          start = {
+            foreground = "#1e1e2e";
+            background = "#f9e2af";
+          };
+          end = {
+            foreground = "#1e1e2e";
+            background = "#a6adc8";
+          };
         };
         search = {
-          matches = { foreground = "#1e1e2e"; background = "#a6adc8"; };
-          focused_match = { foreground = "#1e1e2e"; background = "#a6e3a1"; };
+          matches = {
+            foreground = "#1e1e2e";
+            background = "#a6adc8";
+          };
+          focused_match = {
+            foreground = "#1e1e2e";
+            background = "#a6e3a1";
+          };
         };
         primary = {
           background = "#1e1e2e";
@@ -67,7 +102,10 @@
         };
       };
       cursor = {
-        style = { shape = "Beam"; blinking = "On"; };
+        style = {
+          shape = "Beam";
+          blinking = "On";
+        };
       };
     };
   };

@@ -10,7 +10,9 @@
     enableCompletion = true;
     completionInit = builtins.readFile ./compinit;
 
-    dirHashes = { dot = "$HOME/projects/dotfiles"; };
+    dirHashes = {
+      dot = "$HOME/projects/dotfiles";
+    };
 
     sessionVariables = {
       PAGER = "bat --style=plain,header";
@@ -28,7 +30,9 @@
       ignoreSpace = true;
       ignoreAllDups = true;
     };
-    historySubstringSearch = { enable = true; };
+    historySubstringSearch = {
+      enable = true;
+    };
 
     shellAliases = {
       c = "command -v";

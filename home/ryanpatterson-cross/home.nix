@@ -1,9 +1,28 @@
 { config, pkgs, ... }:
 
 {
-  home.username = "ryanpatterson-cross";
-  home.homeDirectory = "/Users/ryanpatterson-cross";
-  home.stateVersion = "24.05";
+  home = {
+    username = "ryanpatterson-cross";
+    homeDirectory = "/Users/ryanpatterson-cross";
+    stateVersion = "24.05";
+    # pkgs not available as programs
+    packages = with pkgs; [
+      cookiecutter
+      cz-cli
+      eza
+      lftp
+      moreutils
+      (nerdfonts.override { fonts = [ "Inconsolata" ]; })
+    ];
+    # Install configuration
+    activation.installConfig = ''
+      if [ ! -d "${config.home.homeDirectory}/qmk_firmware" ]; then
+        ${pkgs.git}/bin/git clone --depth 1 https://github.com/rbpatt2019/qmk_firmware ${config.home.homeDirectory}/qmk_firmware
+      fi
+      ${pkgs.gh}/bin/gh auth status &> /dev/null || gh auth login
+    '';
+  };
+
   programs.home-manager.enable = true;
 
   # pkgs are in their own modules
@@ -18,29 +37,8 @@
     ./tools/bat/default.nix
     # ./editors/nvim/default.nix
     ./programs.nix
-  ] ;
-
-  # pkgs not available as programs
-  home.packages = with pkgs; [
-    cookiecutter
-    cz-cli
-    eza
-    lftp
-    moreutils
-    (nerdfonts.override { fonts = [ "Inconsolata" ]; })
   ];
-
-  # Link files
 
   # Enable fonts
   fonts.fontconfig.enable = true;
-
-  # Install configuration
-  # Mostly QMK install at the moment
-  home.activation.installConfig = ''
-    if [ ! -d "${config.home.homeDirectory}/qmk_firmware" ]; then
-      ${pkgs.git}/bin/git clone --depth 1 https://github.com/rbpatt2019/qmk_firmware ${config.home.homeDirectory}/qmk_firmware
-    fi
-    ${pkgs.gh}/bin/gh auth status &> /dev/null || gh auth login
-  '';
 }

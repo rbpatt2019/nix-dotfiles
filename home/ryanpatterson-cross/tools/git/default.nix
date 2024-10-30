@@ -3,7 +3,13 @@
     enable = true;
     userName = "rbpatt2019";
     userEmail = "rb.patterson.cross@gmail.com";
-    ignores = [ "*~" ".DS_Store" ".direnv" ".env" ".venv" ];
+    ignores = [
+      "*~"
+      ".DS_Store"
+      ".direnv"
+      ".env"
+      ".venv"
+    ];
     aliases = {
       a = "add";
       bye = "clean -fdx";
@@ -48,15 +54,23 @@
       };
     };
     extraConfig = {
-      core = { 
+      core = {
         editor = "nvim";
       };
-      diff = { colorMoved = "default"; };
-      init = { defaultBranch = "main"; };
-      merge = { conflictstyle = "diff3"; };
-      pull = { rebase = true; };
+      diff = {
+        colorMoved = "default";
+      };
+      init = {
+        defaultBranch = "main";
+      };
+      merge = {
+        conflictstyle = "diff3";
+      };
+      pull = {
+        rebase = true;
+      };
       pretty = {
-        lc = "format:%C(auto)%h%C(reset) %C(white)-%C(reset) %C(italic blue)%ad%C(reset) %C(italic cyan)(%ar)%C(reset)%C(auto)%d%C(reset)%n %C(white)⤷%C(reset) %s %C(241)- %aN <%aE>%C(reset)%n"; 
+        lc = "format:%C(auto)%h%C(reset) %C(white)-%C(reset) %C(italic blue)%ad%C(reset) %C(italic cyan)(%ar)%C(reset)%C(auto)%d%C(reset)%n %C(white)⤷%C(reset) %s %C(241)- %aN <%aE>%C(reset)%n";
         lf = "format:%C(auto)%h%C(reset)%C(auto)%d%C(reset)   %C(italic 239)[P: %p] [T: %t]%C(reset)%n%C(white)Author:%C(reset)   %aN %C(241)<%aE>%C(reset)%n          %C(italic blue)%ad%C(reset) %C(italic cyan)(%ar)%C(reset)%n%C(white)Commit:%C(reset)   %cN %C(241)<%cE>%C(reset)   %C(italic 239)[GPG: %G?% GK]%C(reset)%n          %C(italic blue)%cd%C(reset) %C(italic cyan)(%cr)%C(reset)%w(0,4,4)%n%n%C(bold)%s%C(reset)%n%n%-b%n%n%-N%n";
         rlo = "tformat:%C(auto)%h%C(reset) %C(bold yellow)(%C(magenta)%gd%C(bold yellow))%C(reset)%C(auto)%d%C(reset) %gs %C(italic blue)%ad%C(reset) %C(241)%aN%C(reset)";
       };
