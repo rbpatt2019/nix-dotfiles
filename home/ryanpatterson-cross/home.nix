@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  editor,
+  ...
+}:
 
 {
   home = {
@@ -13,6 +18,7 @@
       lftp
       moreutils
       (nerdfonts.override { fonts = [ "Inconsolata" ]; })
+      editor # minixvim config
     ];
     # Install configuration
     activation.installConfig = ''

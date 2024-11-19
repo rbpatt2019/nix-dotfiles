@@ -8,6 +8,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    minixvim.url = "github:rbpatt2019/minixvim";
     pre-commit-hooks.url = "github:cachix/git-hooks.nix";
   };
 
@@ -16,6 +17,7 @@
       nixpkgs,
       home-manager,
       pre-commit-hooks,
+      minixvim,
       self,
       ...
     }@inputs:
@@ -27,7 +29,9 @@
       homeConfigurations."ryanpatterson-cross" = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
         modules = [ ./home/ryanpatterson-cross/home.nix ];
-        # Optionally use extraSpecialArgs to pass through arguments to home.nix
+        extraSpecialArgs = {
+          editor = minixvim.packages.${system}.default;
+        };
       };
 
       formatter.${system} = pkgs.nixfmt-rfc-style;
