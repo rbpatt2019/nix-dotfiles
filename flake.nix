@@ -34,8 +34,8 @@
         };
       };
 
-      formatter.${system} = pkgs.nixfmt-rfc-style;
-      checks.${system} = {
+      formatter = pkgs.nixfmt-rfc-style;
+      checks = {
         pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
           src = ./.;
           hooks = {
@@ -44,7 +44,7 @@
           };
         };
       };
-      devShells.${system} = {
+      devShells = {
         default = with pkgs; mkShell { inherit (self.checks.${system}.pre-commit-check) shellHook; };
       };
     };
