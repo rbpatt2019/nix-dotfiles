@@ -22,30 +22,49 @@
       ...
     }@inputs:
     let
-      system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "x86_64-linux" # Most other systems
+        "aarch64-linux" # Raspberry Pi 4
+        "aarch64-darwin" # Apple Silicon
+      ];
     in
     {
-      homeConfigurations."ryanpatterson-cross" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [ ./home/ryanpatterson-cross/home.nix ];
-        extraSpecialArgs = {
-          editor = minixvim.packages.${system}.default;
-        };
-      };
+      checks = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        import ./checks { inherit inputs system pkgs; }
+      );
 
-      formatter = pkgs.nixfmt-rfc-style;
-      checks = {
-        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            statix.enable = true;
-            nixfmt-rfc-style.enable = true;
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          precommit = self.checks.${system}.pre-commit-check;
+        in
+        import ./shell.nix { inherit pkgs precommit; }
+      );
+
+      # Modules
+      # Overlays
+      # Packages
+
+      # Stand alone home-manager
+      homeConfigurations = {
+        "ryanpatterson-cross@MacBookPro.powerhub" =
+          let
+            pkgs = nixpkgs.legacyPackages."aarch64-darwin";
+          in
+          home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            modules = [ ./home/ryanpatterson-cross/home.nix ];
+            extraSpecialArgs = {
+              editor = minixvim.packages."aarch64-darwin".default;
+            };
           };
-        };
-      };
-      devShells = {
-        default = with pkgs; mkShell { inherit (self.checks.${system}.pre-commit-check) shellHook; };
       };
     };
 }
