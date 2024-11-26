@@ -54,13 +54,14 @@
 
       # Stand alone home-manager
       homeConfigurations = {
-        "ryanpatterson-cross@MacBookPro.powerhub" =
+        # different user name on mac
+        "ryanpatterson-cross" =
           let
             pkgs = nixpkgs.legacyPackages."aarch64-darwin";
           in
           home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            modules = [ ./home/ryanpatterson-cross/home.nix ];
+            modules = [ ./home/ryanpatterson-cross.nix ];
             extraSpecialArgs = {
               editor = minixvim.packages."aarch64-darwin".default;
             };
