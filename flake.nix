@@ -8,6 +8,7 @@
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    minixvim.url = "github:rbpatt2019/minixvim";
     pre-commit-hooks.url = "github:cachix/git-hooks.nix";
   };
 
@@ -16,32 +17,54 @@
       nixpkgs,
       home-manager,
       pre-commit-hooks,
+      minixvim,
       self,
       ...
     }@inputs:
     let
-      system = "aarch64-darwin";
-      pkgs = nixpkgs.legacyPackages.${system};
+      forAllSystems = nixpkgs.lib.genAttrs [
+        "x86_64-linux" # Most other systems
+        "aarch64-linux" # Raspberry Pi 4
+        "aarch64-darwin" # Apple Silicon
+      ];
     in
     {
-      homeConfigurations."ryanpatterson-cross" = home-manager.lib.homeManagerConfiguration {
-        inherit pkgs;
-        modules = [ ./home/ryanpatterson-cross/home.nix ];
-        # Optionally use extraSpecialArgs to pass through arguments to home.nix
-      };
+      checks = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+        in
+        import ./checks { inherit inputs system pkgs; }
+      );
 
-      formatter.${system} = pkgs.nixfmt-rfc-style;
-      checks.${system} = {
-        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
-            statix.enable = true;
-            nixfmt-rfc-style.enable = true;
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+
+      devShells = forAllSystems (
+        system:
+        let
+          pkgs = nixpkgs.legacyPackages.${system};
+          precommit = self.checks.${system}.pre-commit-check;
+        in
+        import ./shell.nix { inherit pkgs precommit; }
+      );
+
+      # Modules
+      # Overlays
+      # Packages
+
+      # Stand alone home-manager
+      homeConfigurations = {
+        "ryanpatterson-cross@MacBookPro.powerhub" =
+          let
+            pkgs = nixpkgs.legacyPackages."aarch64-darwin";
+          in
+          home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            modules = [ ./home/ryanpatterson-cross/home.nix ];
+            extraSpecialArgs = {
+              editor = minixvim.packages."aarch64-darwin".default;
+            };
           };
-        };
-      };
-      devShells.${system} = {
-        default = with pkgs; mkShell { inherit (self.checks.${system}.pre-commit-check) shellHook; };
       };
     };
 }

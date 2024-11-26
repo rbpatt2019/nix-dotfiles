@@ -1,4 +1,9 @@
-{ config, pkgs, ... }:
+{
+  config,
+  pkgs,
+  editor,
+  ...
+}:
 
 {
   home = {
@@ -13,6 +18,7 @@
       lftp
       moreutils
       (nerdfonts.override { fonts = [ "Inconsolata" ]; })
+      editor # minixvim config
     ];
     # Install configuration
     activation.installConfig = ''
@@ -27,16 +33,15 @@
 
   # pkgs are in their own modules
   imports = [
-    ./term/alacritty/default.nix
-    ./shell/zsh/default.nix
-    ./shell/starship/default.nix
-    ./shell/tmux/default.nix
-    ./tools/fzf/default.nix
-    ./tools/git/default.nix
-    ./tools/lazygit/default.nix
-    ./tools/bat/default.nix
-    # ./editors/nvim/default.nix
-    ./programs.nix
+    ./common/term/alacritty/default.nix
+    ./common/shell/zsh/default.nix
+    ./common/shell/starship/default.nix
+    ./common/shell/tmux/default.nix
+    ./common/tools/fzf/default.nix
+    ./common/tools/git/default.nix
+    ./common/tools/lazygit/default.nix
+    ./common/tools/bat/default.nix
+    ./common/programs.nix
   ];
 
   # Enable fonts
