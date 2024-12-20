@@ -17,7 +17,7 @@
       eza
       lftp
       moreutils
-      (nerdfonts.override { fonts = [ "Inconsolata" ]; })
+      nerd-fonts.inconsolata
       editor # minixvim config
     ];
     # Install configuration
