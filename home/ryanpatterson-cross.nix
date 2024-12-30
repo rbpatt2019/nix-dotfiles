@@ -9,7 +9,7 @@
   home = {
     username = "ryanpatterson-cross";
     homeDirectory = "/Users/ryanpatterson-cross";
-    stateVersion = "24.05";
+    stateVersion = "24.11";
     # pkgs not available as programs
     packages = with pkgs; [
       cookiecutter
