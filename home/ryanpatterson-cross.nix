@@ -18,6 +18,7 @@
       lftp
       moreutils
       nerd-fonts.inconsolata
+      uv
       editor # minixvim config
     ];
     # Install configuration

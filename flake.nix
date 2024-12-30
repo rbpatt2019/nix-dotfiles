@@ -22,6 +22,7 @@
       ...
     }@inputs:
     let
+      inherit (self) outputs;
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux" # Most other systems
         "aarch64-linux" # Raspberry Pi 4
@@ -29,41 +30,39 @@
       ];
     in
     {
-      checks = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        import ./checks { inherit inputs system pkgs; }
-      );
+      overlays = import ./overlays { };
+
+      checks = forAllSystems (system: import ./checks { inherit inputs system; });
 
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
       devShells = forAllSystems (
         system:
         let
-          pkgs = nixpkgs.legacyPackages.${system};
+          pkgs = import nixpkgs {
+            inherit system;
+            overlays = [ self.overlays.default ];
+          };
           precommit = self.checks.${system}.pre-commit-check;
         in
         import ./shell.nix { inherit pkgs precommit; }
       );
-
-      # Modules
-      # Overlays
-      # Packages
 
       # Stand alone home-manager
       homeConfigurations = {
         # different user name on mac
         "ryanpatterson-cross" =
           let
-            pkgs = nixpkgs.legacyPackages."aarch64-darwin";
+            system = "aarch64-darwin";
           in
           home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
+            pkgs = import nixpkgs {
+              inherit system;
+              overlays = [ self.overlays.default ];
+            };
             modules = [ ./home/ryanpatterson-cross.nix ];
             extraSpecialArgs = {
-              editor = minixvim.packages."aarch64-darwin".default;
+              editor = minixvim.packages.${system}.default;
             };
           };
       };
