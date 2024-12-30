@@ -22,7 +22,7 @@ jobs:
       - name: Install tools
         run: nix-env -iA nixfmt-rfc-style statix -f '<nixpkgs>'
       - name: Lint
-        run: statix check **/*.nix
+        run: statix check
       - name: Check for dead code
         uses: astro/deadnix-action@v1
         with:
