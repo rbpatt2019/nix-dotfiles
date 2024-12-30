@@ -20,7 +20,14 @@ jobs:
       - name: Enable caching
         uses: DeterminateSystems/magic-nix-cache-action@v8
       - name: Install tools
-        run: nix-env -iA nixfmt-rfc-style -f '<nixpkgs>'
+        run: nix-env -iA nixfmt-rfc-style statix -f '<nixpkgs>'
+      - name: Lint
+        run: statix check **/*.nix
+      - name: Check for dead code
+        uses: astro/deadnix@v1
+        with:
+          flags: --fail
+          create_pr: false
       - name: Verify format
         run: nixfmt --check **/*.nix || { nixfmt --diff **/*.nix | sed 's/^/::error
           file=/' ; }
