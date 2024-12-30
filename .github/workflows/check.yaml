@@ -24,7 +24,7 @@ jobs:
       - name: Lint
         run: statix check
       - name: Check for dead code
-        uses: astro/deadnix-action@v1
+        uses: astro/deadnix-action@main
         with:
           flags: --fail
           create_pr: false
