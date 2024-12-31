@@ -18,7 +18,7 @@ jobs:
         id: run_checks
         run: |
           set -o pipefail
-          nix flake check 2>&1 |
+          nix flake check --log-format raw 2>&1 |
             tee /tmp/nix-flake-check.log
       - name: Print full failure logs
         if: ${{ failure() && steps.run_checks.conclusion == 'failure' }}
