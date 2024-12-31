@@ -16,7 +16,7 @@ jobs:
         run: |
           set -o pipefail
           nix flake check --log-format raw 2>&1 |
-          tee /tmp/nix-flake-check.log
+            tee /tmp/nix-flake-check.log
       - name: Print full failure logs
         if: failure()
         env:
@@ -25,5 +25,6 @@ jobs:
           DRV=$(grep "For full logs, run" /tmp/nix-flake-check.log | grep -oE "/nix/store/.*.drv")
           PR_NUMBER=$(cut -d"/" -f3 <<< "$GITHUB_REF")
           nix log "$DRV" |
-          >(gh pr comment "$PR_NUMBER" --body -)
+            tee /tmp/nix-flake-check-full.log
+          gh pr comment "$PR_NUMBER" --body /tmp/nix-flake-check-full.log
           exit 1
