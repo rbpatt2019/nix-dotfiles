@@ -13,8 +13,8 @@
 }:
 {
   default = pkgs.mkShell {
-    inherit (precommit) shellHook;
-    buildInputs = precommit.enabledPackages;
+  inherit (precommit) shellHook;
+  buildInputs = precommit.enabledPackages;
   };
   # A minimum shell for bootstrapping on new machines
   bootstrap = pkgs.mkShell {

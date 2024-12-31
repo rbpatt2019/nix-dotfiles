@@ -3,7 +3,8 @@ name: Check
 on: [pull_request]
 jobs:
   check_lock:
-    runs-on: ubuntu-latest
+    if: github.event.pull_request.draft == false
+    runs-on: macos-latest
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -11,5 +12,17 @@ jobs:
         uses: DeterminateSystems/nix-installer-action@v16
       - name: Enable Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
-      - name: Run Checks
-        run: nix flake check  # uses hooks from pre-commit
+      - name: Run Checks  # uses hooks from pre-commit
+        run: |
+          nix flake check 2>&1 |
+          tee /tmp/nix-flake-check.log
+      - name: Print full failure logs
+        if: failure()
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |-
+          DRV=$(grep "For full logs, run" /tmp/nix-pr-build.log | grep -oE "/nix/store/.*.drv")
+          PR_NUMBER=$(cut -d"/" -f3 <<< "$GITHUB_REF")
+          nix log "$DRV"
+          gh pr comment "$PR_NUMBER" --body $(nix log "$DRV")
+          exit 1
