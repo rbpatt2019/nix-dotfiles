@@ -25,10 +25,3 @@ jobs:
         run: |-
           DRV=$(grep "For full logs, run" /tmp/nix-flake-check.log | grep -oE "/nix/store/.*.drv")
           nix log "$DRV"
-          nix log --log-format raw "$DRV" > /tmp/nix-flake-check-full.log
-      - name: Comment full failure logs
-        if: ${{ failure() && steps.run_checks.conclusion == 'failure' }}
-        uses: mshick/add-pr-comment@v2
-        with:
-          message-path: /tmp/nix-flake-check-full.log
-          preformatted: true

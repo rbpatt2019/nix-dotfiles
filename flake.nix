@@ -47,7 +47,7 @@
             nixfmt-rfc-style.enable = true;
             deadnix.enable = true;
             flake-checker.enable = true;
-            nil.enable = true;
+            statix.enable = true;
           };
         };
       });
