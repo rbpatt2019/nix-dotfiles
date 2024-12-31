@@ -13,18 +13,19 @@ jobs:
       - name: Enable Cache
         uses: DeterminateSystems/magic-nix-cache-action@main
       - name: Run Checks  # uses hooks from pre-commit
+        id: run_checks
         run: |
           set -o pipefail
-          nix flake check --log-format raw 2>&1 |
+          nix flake check 2>&1 |
             tee /tmp/nix-flake-check.log
       - name: Print full failure logs
-        if: failure()
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: steps.run_checks.outcome == 'failure'
         run: |-
           DRV=$(grep "For full logs, run" /tmp/nix-flake-check.log | grep -oE "/nix/store/.*.drv")
-          PR_NUMBER=$(cut -d"/" -f3 <<< "$GITHUB_REF")
           nix log "$DRV" |
             tee /tmp/nix-flake-check-full.log
-          gh pr comment "$PR_NUMBER" --body /tmp/nix-flake-check-full.log
-          exit 1
+      - name: Comment full failure logs
+        if: steps.run_checks.outcome == 'failure'
+        uses: mshick/add-pr-comment@v2
+        with:
+          message-path: /tmp/nix-flake-check-full.log
