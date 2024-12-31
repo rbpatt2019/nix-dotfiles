@@ -19,13 +19,13 @@ jobs:
           nix flake check 2>&1 |
             tee /tmp/nix-flake-check.log
       - name: Print full failure logs
-        if: steps.run_checks.outcome == 'failure'
+        if: ${{ failure() && steps.run_checks.conclusion == 'failure' }}
         run: |-
           DRV=$(grep "For full logs, run" /tmp/nix-flake-check.log | grep -oE "/nix/store/.*.drv")
           nix log "$DRV" |
             tee /tmp/nix-flake-check-full.log
       - name: Comment full failure logs
-        if: steps.run_checks.outcome == 'failure'
+        if: ${{ failure() && steps.run_checks.conclusion == 'failure' }}
         uses: mshick/add-pr-comment@v2
         with:
           message-path: /tmp/nix-flake-check-full.log
