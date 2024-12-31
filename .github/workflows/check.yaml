@@ -15,7 +15,7 @@ jobs:
       - name: Run Checks  # uses hooks from pre-commit
         run: |
           set -o pipefail
-          nix flake check 2>&1 |
+          nix flake check --log-format raw 2>&1 |
           tee /tmp/nix-flake-check.log
       - name: Print full failure logs
         if: failure()
@@ -24,6 +24,6 @@ jobs:
         run: |-
           DRV=$(grep "For full logs, run" /tmp/nix-flake-check.log | grep -oE "/nix/store/.*.drv")
           PR_NUMBER=$(cut -d"/" -f3 <<< "$GITHUB_REF")
-          nix log "$DRV"
-          gh pr comment "$PR_NUMBER" --body `nix log "$DRV"`
+          nix log "$DRV" |
+          >(gh pr comment "$PR_NUMBER" --body -)
           exit 1
