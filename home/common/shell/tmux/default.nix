@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 let
   menus = pkgs.tmuxPlugins.mkTmuxPlugin {
     pluginName = "menus";

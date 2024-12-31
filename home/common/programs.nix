@@ -1,7 +1,6 @@
 # Use this file for programs managed by homemanager with minimal config
 # Anything with complex setup should get its own folder appropriately
-{ pkgs, ... }:
-{
+_: {
 
   programs = {
     direnv = {

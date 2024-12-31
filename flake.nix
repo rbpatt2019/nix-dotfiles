@@ -16,26 +16,41 @@
     {
       nixpkgs,
       home-manager,
-      pre-commit-hooks,
       minixvim,
       self,
       ...
     }@inputs:
     let
       forAllSystems = nixpkgs.lib.genAttrs [
-        "x86_64-linux" # Most other systems
-        "aarch64-linux" # Raspberry Pi 4
-        "aarch64-darwin" # Apple Silicon
+        "aarch64-darwin" # Currently only apple tested, since config not used anywhere else
       ];
     in
     {
-      checks = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-        in
-        import ./checks { inherit inputs system pkgs; }
-      );
+      # These only run with `nix flake check` if they are here, and not imported
+      checks = forAllSystems (system: {
+        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
+          src = ./.;
+          hooks = {
+            check-added-large-files.enable = true;
+            check-merge-conflicts.enable = true;
+            end-of-file-fixer.enable = true;
+            mixed-line-endings.enable = true;
+            trim-trailing-whitespace.enable = true;
+            forbid-submodules = {
+              enable = true;
+              name = "Forbid git submodules";
+              description = "Forbids all git submodules in current dir.";
+              language = "fail";
+              entry = "Git submodules are not allowed here: ";
+              types = [ "directory" ];
+            };
+            nixfmt-rfc-style.enable = true;
+            deadnix.enable = true;
+            flake-checker.enable = true;
+            statix.enable = true;
+          };
+        };
+      });
 
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
 
@@ -48,22 +63,18 @@
         import ./shell.nix { inherit pkgs precommit; }
       );
 
-      # Modules
-      # Overlays
-      # Packages
-
       # Stand alone home-manager
       homeConfigurations = {
         # different user name on mac
         "ryanpatterson-cross" =
           let
-            pkgs = nixpkgs.legacyPackages."aarch64-darwin";
+            system = "aarch64-darwin";
           in
           home-manager.lib.homeManagerConfiguration {
-            inherit pkgs;
+            pkgs = nixpkgs.legacyPackages.${system};
             modules = [ ./home/ryanpatterson-cross.nix ];
             extraSpecialArgs = {
-              editor = minixvim.packages."aarch64-darwin".default;
+              editor = minixvim.packages.${system}.default;
             };
           };
       };

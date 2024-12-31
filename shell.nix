@@ -12,21 +12,20 @@
   ...
 }:
 {
-  # A minimum shell for bootstrapping on new machines
   default = pkgs.mkShell {
+    inherit (precommit) shellHook;
+    buildInputs = precommit.enabledPackages;
+  };
+  # A minimum shell for bootstrapping on new machines
+  bootstrap = pkgs.mkShell {
     NIX_CONFIG = "extra-experimental-features = nix-command flakes";
     nativeBuildInputs = builtins.attrValues {
       inherit (pkgs)
         nix
         home-manager
         git
-        just
         pre-commit
         ;
     };
-  };
-  pre-commit = pkgs.mkShell {
-    inherit (precommit) shellHook;
-    buildInputs = precommit.enabledPackages;
   };
 }

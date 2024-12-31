@@ -9,7 +9,7 @@
   home = {
     username = "ryanpatterson-cross";
     homeDirectory = "/Users/ryanpatterson-cross";
-    stateVersion = "24.05";
+    stateVersion = "24.11";
     # pkgs not available as programs
     packages = with pkgs; [
       cookiecutter
@@ -17,7 +17,9 @@
       eza
       lftp
       moreutils
-      (nerdfonts.override { fonts = [ "Inconsolata" ]; })
+      nerd-fonts.inconsolata
+      uv
+      python313
       editor # minixvim config
     ];
     # Install configuration
