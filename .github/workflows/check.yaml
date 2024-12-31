@@ -25,5 +25,5 @@ jobs:
           DRV=$(grep "For full logs, run" /tmp/nix-flake-check.log | grep -oE "/nix/store/.*.drv")
           PR_NUMBER=$(cut -d"/" -f3 <<< "$GITHUB_REF")
           nix log "$DRV"
-          gh pr comment "$PR_NUMBER" --body $(nix log "$DRV")
+          gh pr comment "$PR_NUMBER" --body `nix log "$DRV"`
           exit 1
