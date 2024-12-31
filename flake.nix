@@ -16,7 +16,6 @@ inputs = {
     {
       nixpkgs,
       home-manager,
-      pre-commit-hooks,
       minixvim,
       self,
       ...
