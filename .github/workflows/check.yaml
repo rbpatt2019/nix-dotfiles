@@ -1,5 +1,5 @@
 ---
-name: Lint (nix)
+name: Check
 on: [pull_request]
 jobs:
   check_lock:
@@ -7,55 +7,9 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
-      - name: Check flake inputs
-        uses: DeterminateSystems/flake-checker-action@v9
-        with:
-          ignore-missing-flake-lock: false
-          fail-mode: true
-  lint:
-    runs-on: ubuntu-latest
-    needs: check_lock
-    steps:
       - name: Install Nix
         uses: DeterminateSystems/nix-installer-action@v16
-      - name: Install tools
-        run: nix-env -iA statix -f '<nixpkgs>'
-      - name: Lint
-        run: statix check
-  dead_code:
-    runs-on: ubuntu-latest
-    needs: check_lock
-    steps:
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v16
-      - name: Install tools
-        run: nix-env -iA nixfmt-rfc-style statix -f '<nixpkgs>'
-      - name: Lint
-        run: statix check
-      - name: Check for dead code
-        uses: astro/deadnix-action@main
-        with:
-          flags: --fail
-          create_pr: false
-      - name: Verify format
-        run: nixfmt --check **/*.nix || { nixfmt --diff **/*.nix | sed 's/^/::error
-          file=/' ; }
-  format:
-    runs-on: ubuntu-latest
-    needs: check_lock
-    steps:
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v16
-      - name: Install tools
-        run: nix-env -iA nixfmt-rfc-style -f '<nixpkgs>'
-      - name: Verify format
-        run: nixfmt --check **/*.nix || { nixfmt --diff **/*.nix | sed 's/^/::error
-          file=/' ; }
-  check_build:
-    runs-on: ubuntu-latest
-    needs: [lint, dead_code, format]
-    steps:
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v16
-      - name: Check Build
-        run: nix flake check .
+      - name: Enable Cache
+        uses: DeterminateSystems/magic-nix-cache-action@main
+      - name: Run Checks
+        run: nix flake check  # uses hooks from pre-commit

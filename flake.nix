@@ -1,15 +1,15 @@
 {
-description = "Home Manager configuration of ryanpatterson-cross";
+  description = "Home Manager configuration of ryanpatterson-cross";
 
-inputs = {
-  # Specify the source of Home Manager and Nixpkgs.
-  nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-  home-manager = {
-    url = "github:nix-community/home-manager";
-    inputs.nixpkgs.follows = "nixpkgs";
-  };
-  minixvim.url = "github:rbpatt2019/minixvim";
-  pre-commit-hooks.url = "github:cachix/git-hooks.nix";
+  inputs = {
+    # Specify the source of Home Manager and Nixpkgs.
+    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+    minixvim.url = "github:rbpatt2019/minixvim";
+    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
   };
 
   outputs =
@@ -21,7 +21,6 @@ inputs = {
       ...
     }@inputs:
     let
-      inherit (self) outputs;
       forAllSystems = nixpkgs.lib.genAttrs [
         "x86_64-linux" # Most other systems
         "aarch64-linux" # Raspberry Pi 4
@@ -29,8 +28,6 @@ inputs = {
       ];
     in
     {
-      overlays = import ./overlays { };
-
       checks = forAllSystems (system: import ./checks { inherit inputs system; });
 
       formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
@@ -38,10 +35,7 @@ inputs = {
       devShells = forAllSystems (
         system:
         let
-          pkgs = import nixpkgs {
-            inherit system;
-            overlays = [ self.overlays.default ];
-          };
+          pkgs = nixpkgs.legacyPackages.${system};
           precommit = self.checks.${system}.pre-commit-check;
         in
         import ./shell.nix { inherit pkgs precommit; }
@@ -55,10 +49,7 @@ inputs = {
             system = "aarch64-darwin";
           in
           home-manager.lib.homeManagerConfiguration {
-            pkgs = import nixpkgs {
-              inherit system;
-              overlays = [ self.overlays.default ];
-            };
+            pkgs = nixpkgs.legacyPackages.${system};
             modules = [ ./home/ryanpatterson-cross.nix ];
             extraSpecialArgs = {
               editor = minixvim.packages.${system}.default;
