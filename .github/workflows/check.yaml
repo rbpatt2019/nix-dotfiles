@@ -31,3 +31,4 @@ jobs:
         uses: mshick/add-pr-comment@v2
         with:
           message-path: /tmp/nix-flake-check-full.log
+          preformatted: true
