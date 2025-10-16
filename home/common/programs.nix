@@ -31,6 +31,11 @@ _: {
       enable = true;
     };
 
+    pay-respects = {
+      enable = true;
+      enableZshIntegration = true;
+    };
+
     poetry = {
       enable = true;
       settings = {
@@ -51,12 +56,6 @@ _: {
           auto_update_interval_hours = 24;
         };
       };
-    };
-
-    thefuck = {
-      enable = true;
-      enableZshIntegration = true;
-      enableInstantMode = false;
     };
   };
 }

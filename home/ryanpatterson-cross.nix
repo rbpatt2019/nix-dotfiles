@@ -19,7 +19,7 @@
       moreutils
       nerd-fonts.inconsolata
       uv
-      python313
+      python311
       editor # minixvim config
     ];
     # Install configuration
