@@ -20,6 +20,7 @@
       nerd-fonts.inconsolata
       uv
       python311
+      newt
       editor # minixvim config
     ];
     # Install configuration

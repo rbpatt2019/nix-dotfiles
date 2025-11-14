@@ -2,13 +2,13 @@
 # Anything with complex setup should get its own folder appropriately
 _: {
 
+  home.file.".config/direnv/direnvrc".source = ./direnvrc;
   programs = {
     direnv = {
       enable = true;
       enableZshIntegration = true;
       nix-direnv.enable = true;
     };
-    home.file.".config/direnv/direnvrc".source = ./direnvrc;
 
     fd = {
       enable = true;
@@ -47,16 +47,6 @@ _: {
 
     ripgrep = {
       enable = true;
-    };
-
-    tealdeer = {
-      enable = true;
-      settings = {
-        updates = {
-          auto_update = true;
-          auto_update_interval_hours = 24;
-        };
-      };
     };
   };
 }
