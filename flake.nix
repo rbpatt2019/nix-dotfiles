@@ -44,7 +44,7 @@
               entry = "Git submodules are not allowed here: ";
               types = [ "directory" ];
             };
-            nixfmt-rfc-style.enable = true;
+            nixfmt.enable = true;
             deadnix.enable = true;
             flake-checker.enable = true;
             statix.enable = true;
@@ -52,7 +52,7 @@
         };
       });
 
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
+      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt);
 
       devShells = forAllSystems (
         system:

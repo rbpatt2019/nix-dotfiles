@@ -9,18 +9,17 @@
   home = {
     username = "ryanpatterson-cross";
     homeDirectory = "/Users/ryanpatterson-cross";
-    stateVersion = "24.11";
+    stateVersion = "26.05";
     # pkgs not available as programs
     packages = with pkgs; [
-      cookiecutter
       cz-cli
       eza
       lftp
       moreutils
       nerd-fonts.inconsolata
-      uv
-      python311
       newt
+      gitleaks
+      semgrep
       editor # minixvim config
     ];
     # Install configuration
