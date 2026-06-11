@@ -28,21 +28,9 @@ _: {
       enable = true;
     };
 
-    pandoc = {
-      enable = true;
-    };
-
     pay-respects = {
       enable = true;
       enableZshIntegration = true;
-    };
-
-    poetry = {
-      enable = true;
-      settings = {
-        virtualenvs.create = true;
-        virtualenvs.in-project = true;
-      };
     };
 
     ripgrep = {
