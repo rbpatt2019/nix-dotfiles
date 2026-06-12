@@ -8,7 +8,6 @@
     syntaxHighlighting.enable = true;
 
     enableCompletion = true;
-    completionInit = builtins.readFile ./compinit;
 
     dirHashes = {
       dot = "$HOME/projects/dotfiles";
