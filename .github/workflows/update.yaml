@@ -1,9 +1,8 @@
 ---
 name: Update
 on:
-  workflow_dispatch:
   schedule:
-    - cron: '0 0 1 * *'
+    - cron: "0 0 1 * *"
 jobs:
   flake-update:
     runs-on: ubuntu-latest
