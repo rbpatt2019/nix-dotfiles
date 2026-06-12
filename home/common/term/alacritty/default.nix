@@ -13,7 +13,7 @@
       };
       font = {
         normal = {
-          family = "Inconsolata Nerd Font Mono";
+          family = "Inconsolata";
         };
         size = 16.0;
       };
