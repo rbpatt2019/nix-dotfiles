@@ -20,6 +20,8 @@ _: {
       settings.git_protocol = "ssh";
     };
 
+    home-manager.enable = true;
+
     jq = {
       enable = true;
     };
@@ -28,21 +30,9 @@ _: {
       enable = true;
     };
 
-    pandoc = {
-      enable = true;
-    };
-
     pay-respects = {
       enable = true;
       enableZshIntegration = true;
-    };
-
-    poetry = {
-      enable = true;
-      settings = {
-        virtualenvs.create = true;
-        virtualenvs.in-project = true;
-      };
     };
 
     ripgrep = {

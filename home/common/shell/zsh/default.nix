@@ -16,7 +16,7 @@
 
     sessionVariables = {
       PAGER = "bat --style=plain,header";
-      MANPAGER = "sh -c 'col -bx | bat -l man -p'";
+      MANPAGER = "nvim +Man!";
       MANPATH = "/usr/local/man:$MANPATH";
       EDITOR = "nvim";
       VIRTUAL_ENV_DISABLE_PROMPT = 1;
@@ -63,6 +63,6 @@
       "--help" = "--help 2>&1 | bat --language=help --style=plain";
     };
 
-    initExtra = builtins.readFile ./zshrc;
+    initContent = builtins.readFile ./zshrc;
   };
 }

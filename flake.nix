@@ -2,35 +2,43 @@
   description = "Home Manager configuration of ryanpatterson-cross";
 
   inputs = {
-    # Specify the source of Home Manager and Nixpkgs.
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
-    home-manager = {
-      url = "github:nix-community/home-manager";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-    minixvim.url = "github:rbpatt2019/minixvim";
-    pre-commit-hooks.url = "github:cachix/git-hooks.nix";
+    flake-parts.url = "github:hercules-ci/flake-parts";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    git-hooks-nix.url = "github:cachix/git-hooks.nix";
+    treefmt-nix.url = "github:numtide/treefmt-nix";
+    home-manager.url = "github:nix-community/home-manager";
   };
 
   outputs =
-    {
+    inputs@{
+      flake-parts,
       nixpkgs,
       home-manager,
-      minixvim,
-      self,
       ...
-    }@inputs:
-    let
-      forAllSystems = nixpkgs.lib.genAttrs [
-        "aarch64-darwin" # Currently only apple tested, since config not used anywhere else
+    }:
+    flake-parts.lib.mkFlake { inherit inputs; } {
+      imports = [
+        inputs.git-hooks-nix.flakeModule
+        inputs.treefmt-nix.flakeModule
+        inputs.home-manager.flakeModules.home-manager
       ];
-    in
-    {
-      # These only run with `nix flake check` if they are here, and not imported
-      checks = forAllSystems (system: {
-        pre-commit-check = inputs.pre-commit-hooks.lib.${system}.run {
-          src = ./.;
-          hooks = {
+      systems = [ "aarch64-darwin" ];
+      perSystem =
+        {
+          config,
+          ...
+        }:
+        {
+          treefmt = {
+            flakeCheck = true;
+            flakeFormatter = true;
+            programs = {
+              nixfmt.enable = true;
+              statix.enable = true;
+              deadnix.enable = true;
+            };
+          };
+          pre-commit.settings.hooks = {
             check-added-large-files.enable = true;
             check-merge-conflicts.enable = true;
             end-of-file-fixer.enable = true;
@@ -44,39 +52,40 @@
               entry = "Git submodules are not allowed here: ";
               types = [ "directory" ];
             };
-            nixfmt-rfc-style.enable = true;
-            deadnix.enable = true;
+            treefmt.enable = true;
             flake-checker.enable = true;
-            statix.enable = true;
           };
+          devShells.default = config.pre-commit.devShell;
         };
-      });
-
-      formatter = forAllSystems (system: nixpkgs.legacyPackages.${system}.nixfmt-rfc-style);
-
-      devShells = forAllSystems (
-        system:
-        let
-          pkgs = nixpkgs.legacyPackages.${system};
-          precommit = self.checks.${system}.pre-commit-check;
-        in
-        import ./shell.nix { inherit pkgs precommit; }
-      );
-
-      # Stand alone home-manager
-      homeConfigurations = {
-        # different user name on mac
-        "ryanpatterson-cross" =
-          let
-            system = "aarch64-darwin";
-          in
-          home-manager.lib.homeManagerConfiguration {
-            pkgs = nixpkgs.legacyPackages.${system};
-            modules = [ ./home/ryanpatterson-cross.nix ];
-            extraSpecialArgs = {
-              editor = minixvim.packages.${system}.default;
-            };
-          };
+      flake = {
+        homeModules = {
+          terminal = ./home/common/term/alacritty/default.nix;
+          zsh = ./home/common/shell/zsh/default.nix;
+          cli = ./home/common/shell/starship/default.nix;
+          tmux = ./home/common/shell/tmux/default.nix;
+          fzf = ./home/common/tools/fzf/default.nix;
+          git = ./home/common/tools/git/default.nix;
+          lazygit = ./home/common/tools/lazygit/default.nix;
+          bat = ./home/common/tools/bat/default.nix;
+          programs = ./home/common/programs.nix;
+          packages = ./home/common/packages.nix;
+        };
+        homeConfigurations.ryanpatterson-cross = home-manager.lib.homeManagerConfiguration {
+          pkgs = import nixpkgs { system = "aarch64-darwin"; };
+          modules = [
+            inputs.self.homeModules.terminal
+            inputs.self.homeModules.zsh
+            inputs.self.homeModules.cli
+            inputs.self.homeModules.tmux
+            inputs.self.homeModules.fzf
+            inputs.self.homeModules.git
+            inputs.self.homeModules.lazygit
+            inputs.self.homeModules.bat
+            inputs.self.homeModules.programs
+            inputs.self.homeModules.packages
+            ./home/ryanpatterson-cross.nix
+          ];
+        };
       };
     };
 }
