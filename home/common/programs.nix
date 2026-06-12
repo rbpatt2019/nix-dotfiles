@@ -20,6 +20,8 @@ _: {
       settings.git_protocol = "ssh";
     };
 
+    home-manager.enable = true;
+
     jq = {
       enable = true;
     };

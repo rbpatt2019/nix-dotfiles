@@ -1,28 +1,13 @@
 {
   config,
   pkgs,
-  editor,
   ...
 }:
-
 {
   home = {
     username = "ryanpatterson-cross";
     homeDirectory = "/Users/ryanpatterson-cross";
     stateVersion = "26.05";
-    # pkgs not available as programs
-    packages = with pkgs; [
-      cz-cli
-      eza
-      lftp
-      moreutils
-      nerd-fonts.inconsolata
-      newt
-      gitleaks
-      semgrep
-      editor # minixvim config
-    ];
-    # Install configuration
     activation.installConfig = ''
       if [ ! -d "${config.home.homeDirectory}/qmk_firmware" ]; then
         ${pkgs.git}/bin/git clone --depth 1 https://github.com/rbpatt2019/qmk_firmware ${config.home.homeDirectory}/qmk_firmware
@@ -31,21 +16,4 @@
     '';
   };
 
-  programs.home-manager.enable = true;
-
-  # pkgs are in their own modules
-  imports = [
-    ./common/term/alacritty/default.nix
-    ./common/shell/zsh/default.nix
-    ./common/shell/starship/default.nix
-    ./common/shell/tmux/default.nix
-    ./common/tools/fzf/default.nix
-    ./common/tools/git/default.nix
-    ./common/tools/lazygit/default.nix
-    ./common/tools/bat/default.nix
-    ./common/programs.nix
-  ];
-
-  # Enable fonts
-  fonts.fontconfig.enable = true;
 }
