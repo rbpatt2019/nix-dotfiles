@@ -1,6 +1,6 @@
 # Use this file for programs managed by homemanager with minimal config
 # Anything with complex setup should get its own folder appropriately
-_: {
+{ pkgs, ... }: {
 
   home.file.".config/direnv/direnvrc".source = ./direnvrc;
   programs = {
@@ -28,6 +28,11 @@ _: {
 
     lf = {
       enable = true;
+      previewer.source = pkgs.writeShellScript "pv.sh" ''
+                #!/bin/bash
+        	bat --color always "$1"
+      '';
+      previewer.keybinding = "i";
     };
 
     pay-respects = {
