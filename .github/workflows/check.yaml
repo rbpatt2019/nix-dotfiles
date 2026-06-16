@@ -1,25 +1,10 @@
----
-name: Check
-on: [pull_request]
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
 jobs:
-  checks:
-    if: github.event.pull_request.draft == false
-    runs-on: macos-latest
-    permissions:
-      pull-requests: write
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v16
-      - name: Run Checks  # uses hooks from pre-commit
-        id: run_checks
-        run: |
-          set -o pipefail
-          nix flake check 2>&1 |
-            tee /tmp/nix-flake-check.log
-      - name: Print full failure logs
-        if: ${{ failure() && steps.run_checks.conclusion == 'failure' }}
-        run: |-
-          DRV=$(grep "For full logs, run" /tmp/nix-flake-check.log | grep -oE "/nix/store/.*.drv")
-          nix log "$DRV"
+  check_repo:
+    uses: rbpatt2019/shared-workflows/.github/workflows/check_nix.yaml@main
+    with:
+      os: ubuntu-latest
