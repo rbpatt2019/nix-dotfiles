@@ -1,23 +1,10 @@
----
-name: Update
 on:
   schedule:
-    - cron: "0 0 1 * *"
+    - cron: 1 0 1,15 * *
 jobs:
-  flake-update:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-      - name: Install Nix
-        uses: DeterminateSystems/nix-installer-action@v16
-      - name: Update lock file
-        run: nix flake update -v --commit-lock-file
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v7
-        with:
-          token: ${{ secrets.pat }}
-          title: 'ci(flake.lock): Automatic flake update'
-          body: ${{ steps.commit.outputs.message }}
-          branch: auto/flake-update
-          delete-branch: true
+  check_repo:
+    uses: rbpatt2019/shared-workflows/.github/workflows/update_nix.yaml@main
+    with:
+      os: ubuntu-latest
+    secrets:
+      pat: ${{ secrets.PAT }}
