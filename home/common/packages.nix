@@ -10,8 +10,6 @@
     moreutils
     inconsolata
     newt
-    gitleaks
-    semgrep
   ];
   fonts.fontconfig.enable = true;
 }
