@@ -13,7 +13,11 @@ pkgs.mkShell {
     pythonPackages.python
     pythonPackages.venvShellHook
   ];
-  packages = [ pkgs.poetry ];
+  packages = with pkgs; [
+    poetry
+    semgrep
+    gitleaks
+  ];
   venvDir = "./.venv";
   postVenvCreation = ''
     unset SOURCE_DATE_EPOCH
