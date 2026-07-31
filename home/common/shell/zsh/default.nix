@@ -38,7 +38,6 @@
       d = "dirs -v";
       del = "rm -rf";
       g = "git";
-      i = "ipython";
       l = "lazygit";
       la = "eza -ahl --total-size --git";
       lt = "eza -ahlr --sort=time --total-size --git";
@@ -48,10 +47,9 @@
       m = "make";
       p = "poetry";
       switch = "home-manager switch -b bak";
-      update = "nix flake update && home-manager switch -b bak";
-      t = "tmux";
-      ta = "tmux attach -t";
       tree = "eza -lhT --total-size --git";
+      update = "nix flake update && home-manager switch -b bak";
+      z = "zellij";
     };
 
     shellGlobalAliases = {

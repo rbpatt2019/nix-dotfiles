@@ -7,6 +7,7 @@
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     home-manager.url = "github:nix-community/home-manager";
+    zjstatus-hints.url = "github:myah-mitchell/zjstatus-hints/v0.2.1";
   };
 
   outputs =
@@ -14,6 +15,7 @@
       flake-parts,
       nixpkgs,
       home-manager,
+      zjstatus-hints,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -62,7 +64,7 @@
           terminal = ./home/common/term/alacritty/default.nix;
           zsh = ./home/common/shell/zsh/default.nix;
           cli = ./home/common/shell/starship/default.nix;
-          tmux = ./home/common/shell/tmux/default.nix;
+          zellij = ./home/common/shell/zellij/default.nix;
           fzf = ./home/common/tools/fzf/default.nix;
           git = ./home/common/tools/git/default.nix;
           lazygit = ./home/common/tools/lazygit/default.nix;
@@ -71,12 +73,17 @@
           packages = ./home/common/packages.nix;
         };
         homeConfigurations.ryanpatterson-cross = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { system = "aarch64-darwin"; };
+          pkgs = import nixpkgs {
+            system = "aarch64-darwin";
+            overlays = [
+              (_final: prev: { zjstatus-hints = zjstatus-hints.packages.${prev.system}.default; })
+            ];
+          };
           modules = [
             inputs.self.homeModules.terminal
             inputs.self.homeModules.zsh
             inputs.self.homeModules.cli
-            inputs.self.homeModules.tmux
+            inputs.self.homeModules.zellij
             inputs.self.homeModules.fzf
             inputs.self.homeModules.git
             inputs.self.homeModules.lazygit
