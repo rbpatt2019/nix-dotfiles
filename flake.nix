@@ -28,11 +28,12 @@
       perSystem =
         {
           config,
+          pkgs,
           ...
         }:
         {
           treefmt = {
-            flakeCheck = true;
+            flakeCheck = false; # handled by pre-commit
             flakeFormatter = true;
             programs = {
               nixfmt.enable = true;
@@ -40,22 +41,32 @@
               deadnix.enable = true;
             };
           };
-          pre-commit.settings.hooks = {
-            check-added-large-files.enable = true;
-            check-merge-conflicts.enable = true;
-            end-of-file-fixer.enable = true;
-            mixed-line-endings.enable = true;
-            trim-trailing-whitespace.enable = true;
-            forbid-submodules = {
-              enable = true;
-              name = "Forbid git submodules";
-              description = "Forbids all git submodules in current dir.";
-              language = "fail";
-              entry = "Git submodules are not allowed here: ";
-              types = [ "directory" ];
+          pre-commit.settings = {
+            package = pkgs.prek;
+            hooks = {
+              check-added-large-files.enable = true;
+              check-merge-conflicts.enable = true;
+              end-of-file-fixer.enable = true;
+              mixed-line-endings.enable = true;
+              trim-trailing-whitespace.enable = true;
+              forbid-submodules = {
+                enable = true;
+                name = "Forbid git submodules";
+                description = "Forbids all git submodules in current dir.";
+                language = "fail";
+                entry = "Git submodules are not allowed here: ";
+                types = [ "directory" ];
+              };
+              treefmt.enable = true;
+              flake-checker.enable = true;
+              checks = {
+                enable = true;
+                name = "nix flake check";
+                entry = "nix flake check .";
+                pass_filenames = false;
+                stages = [ "pre-push" ];
+              };
             };
-            treefmt.enable = true;
-            flake-checker.enable = true;
           };
           devShells.default = config.pre-commit.devShell;
         };
