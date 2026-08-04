@@ -10,6 +10,7 @@
     moreutils
     inconsolata
     newt
+    minixvim
   ];
   fonts.fontconfig.enable = true;
 }

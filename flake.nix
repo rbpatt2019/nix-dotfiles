@@ -7,7 +7,8 @@
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     home-manager.url = "github:nix-community/home-manager";
-    zjstatus-hints.url = "github:myah-mitchell/zjstatus-hints/v0.2.1";
+    # zjstatus-hints.url = "github:myah-mitchell/zjstatus-hints/v0.2.1";
+    minixvim.url = "github:rbpatt2019/minixvim";
   };
 
   outputs =
@@ -15,7 +16,8 @@
       flake-parts,
       nixpkgs,
       home-manager,
-      zjstatus-hints,
+      # zjstatus-hints,
+      minixvim,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -87,7 +89,8 @@
           pkgs = import nixpkgs {
             system = "aarch64-darwin";
             overlays = [
-              (_final: prev: { zjstatus-hints = zjstatus-hints.packages.${prev.system}.default; })
+              # (_final: prev: { zjstatus-hints = zjstatus-hints.packages.${prev.system}.default; })
+              (_final: prev: { minixvim = minixvim.packages.${prev.system}.default; })
             ];
           };
           modules = [
