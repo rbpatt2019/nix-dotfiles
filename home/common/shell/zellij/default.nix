@@ -3,11 +3,11 @@
   programs.zellij = {
     enable = true;
     enableZshIntegration = true;
-    attachExistingSession = false;
+    attachExistingSession = true;
     exitShellOnExit = false;
     plugins = with pkgs; [
       zellijPlugins.zjstatus
-      zjstatus-hints
+      zellijPlugins.zjframes
     ];
     extraConfig = builtins.readFile ./config.kdl;
     layouts = {
