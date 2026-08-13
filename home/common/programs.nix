@@ -4,7 +4,13 @@
 
   home.file.".config/direnv/direnvrc".source = ./direnvrc;
   programs = {
-    btop.enable = true;
+    btop = {
+      enable = true;
+      settings.color_theme = "catpuccin";
+      themes = {
+        catpuccin = builtins.readFile ./btop_catpuccin.theme;
+      };
+    };
     direnv = {
       enable = true;
       enableZshIntegration = true;
