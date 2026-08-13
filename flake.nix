@@ -71,7 +71,7 @@
               update = {
                 enable = true;
                 name = "nix flake update";
-                entry = "nix flake update .";
+                entry = "nix flake update";
                 pass_filenames = false;
                 stages = [ "pre-push" ];
               };
