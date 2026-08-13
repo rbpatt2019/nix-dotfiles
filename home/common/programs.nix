@@ -4,6 +4,7 @@
 
   home.file.".config/direnv/direnvrc".source = ./direnvrc;
   programs = {
+    btop.enable = true;
     direnv = {
       enable = true;
       enableZshIntegration = true;

@@ -2,7 +2,7 @@ layout {
     default_tab_template {
         pane size=2 borderless=true {
             plugin location="zjstatus" {
-                hide_frame_for_single_pane "true"
+                hide_frame_for_single_pane "false"
 
                 border_enabled  "true"
                 border_char     "─"
@@ -37,9 +37,9 @@ layout {
                 tab_normal_fullscreen   "#[bg=#181926,fg=#8bd5ca]#[bg=#8bd5ca,fg=#1e2030,bold]{index} #[bg=#363a4f,fg=#8bd5ca] {name}{fullscreen_indicator}#[bg=#181926,fg=#363a4f,bold]"
                 tab_normal_sync         "#[bg=#181926,fg=#8bd5ca]#[bg=#8bd5ca,fg=#1e2030,bold]{index} #[bg=#363a4f,fg=#8bd5ca] {name}{sync_indicator}#[bg=#181926,fg=#363a4f,bold]"
 
-                tab_active              "#[bg=#181926,fg=#eed49f]#[bg=#eed49f,fg=#1e2030,bold]{index} #[bg=#363a4f,fg=#eed49f] {name}{floating_indicator}#[bg=#181926,fg=#363a4f,bold]"
-                tab_active_fullscreen   "#[bg=#181926,fg=#eed49f]#[bg=#eed49f,fg=#1e2030,bold]{index} #[bg=#363a4f,fg=#eed49f] {name}{fullscreen_indicator}#[bg=#181926,fg=#363a4f,bold]"
-                tab_active_sync         "#[bg=#181926,fg=#eed49f]#[bg=#eed49f,fg=#1e2030,bold]{index} #[bg=#363a4f,fg=#eed49f] {name}{sync_indicator}#[bg=#181926,fg=#363a4f,bold]"
+                tab_active              "#[bg=#181926,fg=#f5a97f]#[bg=#f5a97f,fg=#1e2030,bold]{index} #[bg=#363a4f,fg=#f5a97f] {name}{floating_indicator}#[bg=#181926,fg=#363a4f,bold]"
+                tab_active_fullscreen   "#[bg=#181926,fg=#f5a97f]#[bg=#f5a97f,fg=#1e2030,bold]{index} #[bg=#363a4f,fg=#f5a97f] {name}{fullscreen_indicator}#[bg=#181926,fg=#363a4f,bold]"
+                tab_active_sync         "#[bg=#181926,fg=#f5a97f]#[bg=#f5a97f,fg=#1e2030,bold]{index} #[bg=#363a4f,fg=#f5a97f] {name}{sync_indicator}#[bg=#181926,fg=#363a4f,bold]"
 
                 tab_separator           "#[bg=#181926] "
 
@@ -54,5 +54,20 @@ layout {
             }
         }
         children
+    }
+    tab name="sys" {
+        pane command="btop"
+    }
+    tab name="Work" focus=true {
+        pane stacked=true {
+            pane name="GEL" cwd="~/Projects"
+            pane name="Personal" cwd="~/Projects/personal/"
+        }
+    }
+    tab name="HPC" {
+        pane command="ssh" {
+            args "unicorn"
+            start_suspended true
+        }
     }
 }

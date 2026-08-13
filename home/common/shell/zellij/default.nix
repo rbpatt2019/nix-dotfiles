@@ -7,7 +7,6 @@
     exitShellOnExit = false;
     plugins = with pkgs; [
       zellijPlugins.zjstatus
-      zellijPlugins.zjframes
     ];
     extraConfig = builtins.readFile ./config.kdl;
     layouts = {
