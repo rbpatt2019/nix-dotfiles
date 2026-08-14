@@ -56,6 +56,7 @@
       B = "| bat --style=plain";
       G = "| rg";
       L = "&& le";
+      X = "| xargs";
       "-h" = "-h 2>&1 | bat --language=help --style=plain";
       "--help" = "--help 2>&1 | bat --language=help --style=plain";
     };
