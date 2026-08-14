@@ -8,8 +8,9 @@
     eza
     lftp
     moreutils
-    inconsolata
+    nerd-fonts.inconsolata
     newt
+    minixvim
   ];
   fonts.fontconfig.enable = true;
 }

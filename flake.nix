@@ -7,6 +7,8 @@
     git-hooks-nix.url = "github:cachix/git-hooks.nix";
     treefmt-nix.url = "github:numtide/treefmt-nix";
     home-manager.url = "github:nix-community/home-manager";
+    zjstatus-hints.url = "github:myah-mitchell/zjstatus-hints";
+    minixvim.url = "github:rbpatt2019/minixvim";
   };
 
   outputs =
@@ -14,6 +16,8 @@
       flake-parts,
       nixpkgs,
       home-manager,
+      zjstatus-hints,
+      minixvim,
       ...
     }:
     flake-parts.lib.mkFlake { inherit inputs; } {
@@ -26,11 +30,12 @@
       perSystem =
         {
           config,
+          pkgs,
           ...
         }:
         {
           treefmt = {
-            flakeCheck = true;
+            flakeCheck = false; # handled by pre-commit
             flakeFormatter = true;
             programs = {
               nixfmt.enable = true;
@@ -38,22 +43,39 @@
               deadnix.enable = true;
             };
           };
-          pre-commit.settings.hooks = {
-            check-added-large-files.enable = true;
-            check-merge-conflicts.enable = true;
-            end-of-file-fixer.enable = true;
-            mixed-line-endings.enable = true;
-            trim-trailing-whitespace.enable = true;
-            forbid-submodules = {
-              enable = true;
-              name = "Forbid git submodules";
-              description = "Forbids all git submodules in current dir.";
-              language = "fail";
-              entry = "Git submodules are not allowed here: ";
-              types = [ "directory" ];
+          pre-commit.settings = {
+            package = pkgs.prek;
+            hooks = {
+              check-added-large-files.enable = true;
+              check-merge-conflicts.enable = true;
+              end-of-file-fixer.enable = true;
+              mixed-line-endings.enable = true;
+              trim-trailing-whitespace.enable = true;
+              forbid-submodules = {
+                enable = true;
+                name = "Forbid git submodules";
+                description = "Forbids all git submodules in current dir.";
+                language = "fail";
+                entry = "Git submodules are not allowed here: ";
+                types = [ "directory" ];
+              };
+              treefmt.enable = true;
+              flake-checker.enable = true;
+              checks = {
+                enable = true;
+                name = "nix flake check";
+                entry = "nix flake check .";
+                pass_filenames = false;
+                stages = [ "pre-push" ];
+              };
+              update = {
+                enable = true;
+                name = "nix flake update";
+                entry = "nix flake update";
+                pass_filenames = false;
+                stages = [ "pre-push" ];
+              };
             };
-            treefmt.enable = true;
-            flake-checker.enable = true;
           };
           devShells.default = config.pre-commit.devShell;
         };
@@ -62,7 +84,7 @@
           terminal = ./home/common/term/alacritty/default.nix;
           zsh = ./home/common/shell/zsh/default.nix;
           cli = ./home/common/shell/starship/default.nix;
-          tmux = ./home/common/shell/tmux/default.nix;
+          zellij = ./home/common/shell/zellij/default.nix;
           fzf = ./home/common/tools/fzf/default.nix;
           git = ./home/common/tools/git/default.nix;
           lazygit = ./home/common/tools/lazygit/default.nix;
@@ -71,12 +93,18 @@
           packages = ./home/common/packages.nix;
         };
         homeConfigurations.ryanpatterson-cross = home-manager.lib.homeManagerConfiguration {
-          pkgs = import nixpkgs { system = "aarch64-darwin"; };
+          pkgs = import nixpkgs {
+            system = "aarch64-darwin";
+            overlays = [
+              (_final: prev: { zjstatus-hints = zjstatus-hints.packages.${prev.system}.default; })
+              (_final: prev: { minixvim = minixvim.packages.${prev.system}.default; })
+            ];
+          };
           modules = [
             inputs.self.homeModules.terminal
             inputs.self.homeModules.zsh
             inputs.self.homeModules.cli
-            inputs.self.homeModules.tmux
+            inputs.self.homeModules.zellij
             inputs.self.homeModules.fzf
             inputs.self.homeModules.git
             inputs.self.homeModules.lazygit
