@@ -3,3 +3,4 @@ default_mode "locked"
 mouse_mode false
 show_startup_tips false
 pane_frames false
+stacked_pane_list false
